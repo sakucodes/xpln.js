@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explain me this sample</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="src/xpln.css">
+</head>
+
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">
+                    <img src="origami.svg" alt="" width="30" height="30" class="d-inline-block align-top">
+                    xpln
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="#">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Link</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" data-xpln-show>Show Help</a>
+                        </li>
+                    </ul>
+                    <form class="d-flex" data-xpln data-xpln-text="Here you can search for everything" data-xpln-step="0">
+                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                        <button class="btn btn-outline-success" type="submit">Search</button>
+                    </form>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container-fluid row">
+
+        <nav id="navbar-example3" class="navbar navbar-light bg-light col-2">
+            <nav class="nav nav-pills flex-column" data-xpln data-xpln-text="Item-1-1 Step 2 Tooltip" data-xpln-step="1">
+                <a class="nav-link" href="#item-1">Item 1</a>
+                <nav class="nav nav-pills flex-column">
+                    <a class="nav-link ms-3 my-1" href="#item-1-1">Item 1-1</a>
+                    <a class="nav-link ms-3 my-1" href="#item-1-2">Item 1-2</a>
+                </nav>
+                <a class="nav-link" href="#item-2">Item 2</a>
+                <a class="nav-link" href="#item-3">Item 3</a>
+                <nav class="nav nav-pills flex-column">
+                    <a class="nav-link ms-3 my-1" href="#item-3-1">Item 3-1</a>
+                    <a class="nav-link ms-3 my-1" href="#item-3-2">Item 3-2</a>
+                </nav>
+            </nav>
+        </nav>
+
+        <div class="col-8">
+            <div data-bs-spy="scroll" data-bs-target="#navbar-example3" data-bs-offset="0" tabindex="0">
+                <h4 id="item-1">Item 1</h4>
+                <p>...</p>
+                <h5 id="item-1-1">Item 1-1</h5>
+                <p>...</p>
+                <h5 id="item-1-2">Item 1-2</h5>
+                <p>...</p>
+                <h4 id="item-2">Item 2</h4>
+                <p>...</p>
+                <h4 id="item-3">Item 3</h4>
+                <p>...</p>
+                <h5 id="item-3-1">Item 3-1</h5>
+                <p>...</p>
+                <h5 id="item-3-2">Item 3-2</h5>
+                <p>...</p>
+              </div>
+        </div>
+    </div>
+    <footer>
+        <nav class="navbar fixed-bottom navbar-light bg-light">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">
+                    <img src="origami.svg" alt="" width="30" height="30" class="d-inline-block align-top">
+                    xpln
+                </a>
+            </div>
+        </nav>
+    </footer>
+    <div class="card text-dark bg-light mb-3" data-xpln-tooltip>
+        <div class="card-header">Tipp <a href="#" class="btn" data-xpln-close>x</a></div>
+        <div class="card-body">
+            <h5 class="card-title"></h5>
+            <p class="card-text" data-xpln-text></p>
+        </div>
+        <div class="card-footer bg-transparent border-success">
+            <button class="btn btn-primary" data-xpln-prev>Prev</button>
+            <button href="#" class="btn btn-primary" data-xpln-next>Next</button>
+        </div>
+        </div>
+    <script type="module" src="https://unpkg.com/@popperjs/core@2"></script>
+    <script type="module" src="src/xpln.js"></script>
+    <script type="module" src="index.js"></script>
+</body>
+
+</html>

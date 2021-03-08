@@ -1,0 +1,33 @@
+#xpln-highlight {
+  position: absolute;
+  z-index: 9998;
+  transition: all 0.3s ease-out;
+  box-shadow: rgb(33 33 33 / 80%) 0px 0px 1px 2px, rgb(33 33 33 / 60%) 0px 0px 0px 5000px;
+  border-radius: 4px;
+  display: none;
+}
+
+#xpln-highlight[data-xpln-show] {
+  display: block;
+}
+
+[data-xpln-elem] {
+  z-index: 9999;
+}
+
+[data-xpln-tooltip] {
+  background: #333;
+  color: white;
+  font-weight: bold;
+  padding: 4px 8px;
+  font-size: 13px;
+  border-radius: 4px;
+  z-index: 9999;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+[data-xpln-tooltip][data-xpln-show] {
+  visibility: visible;
+  pointer-events: all;
+}
