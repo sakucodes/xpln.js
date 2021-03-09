@@ -35,4 +35,4 @@ document.querySelector('.show-help').addEventListener('click', () => {
 ```
 
 ## Example
-See index.html for an "complete" example.
+See index.html for a "complete" example.
