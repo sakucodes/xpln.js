@@ -3,6 +3,8 @@
 xpln.js stands for explain and is a simple introduction/tutorial library for your page.
 It uses popper.js, so if you already use it, don't add it again.
 
+<img src="doc/sample-1.png" width="250" >
+
 ## CSS
 Add this `<link rel="stylesheet" href="src/xpln.css">` into your `<head>`.
 
@@ -31,3 +33,6 @@ document.querySelector('.show-help').addEventListener('click', () => {
     xpln.show();
 });
 ```
+
+## Example
+See index.html for an "complete" example.
