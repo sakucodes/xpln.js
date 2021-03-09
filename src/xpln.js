@@ -1,36 +1,68 @@
 export const prefix = 'xpln';
-const cardSelector = `[data-${prefix}-tooltip]`;
-const textSelector = `[data-${prefix}-text]`;
-const closeSelector = `[data-${prefix}-close]`;
+const xplnSelector = `[data-${prefix}]`;
+const xplnStepAttr = `data-${prefix}-step`;
+
+const xplnBoxSelector = `[data-${prefix}-box]`;
+const xplnBoxContentSelector = `[data-${prefix}-content]`;
+const xplnBoxCloseBtnSelector = `[data-${prefix}-close]`;
 const prevBtnSelector = `[data-${prefix}-prev]`;
 const nextBtnSelector = `[data-${prefix}-next]`;
 
+const minDelay = 120;
 const padding = 10;
+
+const defaultBoxHtml = `<div class="card text-dark bg-light mb-3" data-xpln-box>
+<div class="card-header">Tipp <a href="#" class="btn" data-xpln-close>x</a></div>
+<div class="card-body">
+    <p class="card-text" data-xpln-content></p>
+</div>
+<div class="card-footer bg-transparent border-success">
+    <button class="btn btn-primary" data-xpln-prev>Prev</button>
+    <button class="btn btn-primary" data-xpln-next>Next</button>
+</div>
+</div>`;
 
 class xpln {
   bodyElem = null;
   highlightElem = null;
-  tooltipElem = null;
-  activeTooltipElem = null;
+  xplnBoxElem = null;
+  activeXplnElem = null;
   xplnList = [];
   activeIndex = 0;
+  xplnBoxDelay = 0;
   popperInstance = null;
 
   initialized = false;
+  options = {
+    delay: 0,
+    disableActiveElem: false,
+  };
 
-  constructor() {
-}
+  constructor() {}
 
-_init() {
+  init(options) {
     if (this.initialized) return;
-    
+
+    if (options) {
+      this.options = {
+        ...this.options,
+        ...options,
+      };
+    }
+
+    if (this.options.delay) {
+      this.xplnBoxDelay = Math.max(minDelay, options.delay);
+    }
+
     this.body = document.getElementsByTagName('body')[0];
-    this.xplnList = document.querySelectorAll('[data-xpln]');
+    this.xplnList = [...document.querySelectorAll(xplnSelector)].sort(
+      (a, b) => a.getAttribute(xplnStepAttr) - b.getAttribute(xplnStepAttr)
+    );
 
     this._init_highlight();
-    this._init_tooltip();
+    this._init_box();
 
-    this.popperInstance = Popper.createPopper(this.highlightElem, this.tooltipElem, {
+    this.popperInstance = Popper.createPopper(this.highlightElem, this.xplnBoxElem, {
       placement: 'auto',
       modifiers: [
         {
@@ -46,14 +78,14 @@ _init() {
   }
 
   show() {
-    if (!this.xplnList) return;
+    if (!this.initialized || !this.xplnList) return;
+
+    if (this.activeXplnElem) {
+      this.activeXplnElem.removeAttribute(`data-${prefix}-elem`);
+    }
 
     const elem = this.xplnList[this.activeIndex];
     if (!elem) return;
-
-    if (this.activeTooltipElem) {
-      this.activeTooltipElem.removeAttribute(`data-${prefix}-elem`);
-    }
 
     const clientRect = elem.getClientRects()[0];
 
@@ -63,86 +95,89 @@ _init() {
     this.highlightElem.style.width = clientRect.width + 2 * padding + 'px';
     this.highlightElem.setAttribute(`data-${prefix}-show`, '');
 
-    this.activeTooltipElem = elem;
+    this.activeXplnElem = elem;
 
     this._update_tooltip();
     this._update_buttons();
 
     setTimeout(() => {
       this.popperInstance.update();
-      this.tooltipElem.setAttribute(`data-${prefix}-show`, '');
-      this.activeTooltipElem.setAttribute(`data-${prefix}-elem`, '');
-    }, 320);
+      this.xplnBoxElem.setAttribute(`data-${prefix}-show`, '');
+      if (!this.options.disableActiveElem) {
+        this.activeXplnElem.setAttribute(`data-${prefix}-elem`, '');
+      }
+    }, this.xplnBoxDelay);
   }
 
   hide() {
-    this.tooltipElem.removeAttribute(`data-${prefix}-show`);
+    this.xplnBoxElem.removeAttribute(`data-${prefix}-show`);
     this.highlightElem.removeAttribute(`data-${prefix}-show`);
 
-    if (this.activeTooltipElem) {
-      this.activeTooltipElem.removeAttribute(`data-${prefix}-elem`);
-      this.activeTooltipElem = null;
+    if (this.activeXplnElem) {
+      this.activeXplnElem.removeAttribute(`data-${prefix}-elem`);
+      this.activeXplnElem = null;
     }
 
-    // this.body.removeChild(this.highlightElem);
-    // this.body.removeChild(this.tooltipElem);
-
     this.activeIndex = 0;
+  }
+
+  clean() {
+    this.hide();
+
+    this.body.removeChild(this.highlightElem);
+    this.body.removeChild(this.tooltipElem);
+
+    this.initialized = false;
   }
 
   _init_highlight() {
     this.highlightElem = document.createElement('div');
     this.highlightElem.setAttribute('id', `${prefix}-highlight`);
+    this.highlightElem.style.setProperty('--delay', this.xplnBoxDelay + 'ms');
     this.body.appendChild(this.highlightElem);
   }
 
-  _init_tooltip() {
-    this.tooltipElem = document.querySelector(cardSelector);
+  _init_box() {
+    this.xplnBoxElem = document.querySelector(xplnBoxSelector);
 
-    // if (!this.tooltipElem) {
-    //     let tooltip = document.createElement('div');
-    //     tooltip.innerHTML = `<div class="card text-dark bg-light mb-3" style="max-width: 18rem;">
-    //     <div class="card-header">Tipp <a href="#" class="btn xpln-close">X</a></div>
-    //     <div class="card-body">
-    //         <h5 class="card-title xpln-title"></h5>
-    //         <p class="card-text ${prefix}-text"></p>
-    //     </div>
-    //     <div class="card-footer bg-transparent border-success">
-    //         <a href="#" class="btn btn-primary xpln-prev">Prev</a>
-    //         <a href="#" class="btn btn-primary xpln-next">Next</a>
-    //     </div>
-    //     </div>`;
+    if (!this.xplnBoxElem) {
+      let box = document.createElement('div');
+      box.innerHTML = defaultBoxHtml;
 
-    //     tooltip = tooltip.firstChild;
-    //     tooltip.classList.add(`${prefix}-tooltip`);
+      box = box.firstChild;
+      box.classList.add(`${prefix}-tooltip`);
 
-    //     this.body.appendChild(tooltip);
-    //     this.tooltipElem = tooltip;
-    // }
+      this.xplnBoxElem = box;
+      this.body.appendChild(box);
+    }
 
     this._init_buttons();
   }
 
   _init_buttons() {
-    const closeBtn = this.tooltipElem.querySelector(closeSelector);
-    closeBtn.addEventListener('click', () => {
-      this.hide();
-    });
+    const closeBtns = this.xplnBoxElem.querySelectorAll(xplnBoxCloseBtnSelector);
+    if (closeBtns && closeBtns.length > 0) {
+      for (const btn of closeBtns) {
+        btn.addEventListener('click', () => {
+          this.hide();
+        });
+      }
+    }
 
-    const prevBtn = this.tooltipElem.querySelector(prevBtnSelector);
+    const prevBtn = this.xplnBoxElem.querySelector(prevBtnSelector);
     if (prevBtn) {
       prevBtn.addEventListener('click', () => {
-        this.tooltipElem.removeAttribute(`data-${prefix}-show`);
+        this.xplnBoxElem.removeAttribute(`data-${prefix}-show`);
         this.activeIndex = Math.max(this.activeIndex - 1, 0);
         this.show();
       });
     }
 
-    const nextBtn = this.tooltipElem.querySelector(nextBtnSelector);
+    const nextBtn = this.xplnBoxElem.querySelector(nextBtnSelector);
     if (nextBtn) {
       nextBtn.setAttribute('disabled', this.activeIndex + 1 >= this.xplnList.length);
       nextBtn.addEventListener('click', () => {
-        this.tooltipElem.removeAttribute(`data-${prefix}-show`);
+        this.xplnBoxElem.removeAttribute(`data-${prefix}-show`);
         this.activeIndex = Math.min(this.activeIndex + 1, this.xplnList.length);
         this.show();
       });
@@ -152,14 +187,14 @@ _init() {
   }
 
   _update_tooltip() {
-    const text = this.activeTooltipElem.getAttribute(`data-${prefix}-text`);
-    const tooltipTextElem = this.tooltipElem.querySelector(textSelector);
+    const text = this.activeXplnElem.getAttribute(`data-${prefix}`);
+    const tooltipTextElem = this.xplnBoxElem.querySelector(xplnBoxContentSelector);
     tooltipTextElem.innerHTML = text;
   }
 
   _update_buttons() {
-    const prevBtn = this.tooltipElem.querySelector(prevBtnSelector);
-    const nextBtn = this.tooltipElem.querySelector(nextBtnSelector);
+    const prevBtn = this.xplnBoxElem.querySelector(prevBtnSelector);
+    const nextBtn = this.xplnBoxElem.querySelector(nextBtnSelector);
 
     if (this.activeIndex <= 0) {
       prevBtn.setAttribute('disabled', '');

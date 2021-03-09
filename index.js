@@ -1,12 +1,11 @@
-import xpln from './src/xpln.js';
-import xpnl from './src/xpln.js';
+import xpln from './src/xpln.min.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-    xpnl._init();
-    xpnl.show();
+  const options = { delay: 200, disableActiveElem: false };
+  xpln.init(options);
+  xpln.show();
 
-    document.querySelector('[data-xpln-show]').addEventListener('click', () => {
-        // xpln.hide();
-        xpln.show();
-    });
+  document.querySelector('.show-help').addEventListener('click', () => {
+    xpln.show();
+  });
 });

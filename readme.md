@@ -7,12 +7,27 @@ It uses popper.js, so if you already use it, don't add it again.
 Add this `<link rel="stylesheet" href="src/xpln.css">` into your `<head>`.
 
 ## Scripts
-Add this at the end of your body - where the other scripts are ;)
-```html
-<script type="module" src="https://unpkg.com/@popperjs/core@2"></script>
-<script type="module" src="src/xpln.js"></script>
-<script type="module" src="index.js"></script>
+Import xpln.js in your script file like 
+```js
+import xpln from './src/xpln.min.js';
 ```
 
 ## Use it
- tbd...
+In your HTML:
+- add attribute and text `data-xpln="This is your explanation text."`
+- optional: add step attribute to each element `data-xpln-step="0"`
+
+In your script:
+- Use options or not.
+- Call init
+- Call show
+
+```js
+const options = { delay: 200, disableActiveElem: false };
+xpln.init(options);
+xpln.show();
+
+document.querySelector('.show-help').addEventListener('click', () => {
+    xpln.show();
+});
+```

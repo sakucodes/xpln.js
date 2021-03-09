@@ -38,10 +38,11 @@
                             <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#" data-xpln-show>Show Help</a>
+                            <a class="nav-link show-help" href="#">Show Help</a>
                         </li>
                     </ul>
-                    <form class="d-flex" data-xpln data-xpln-text="Here you can search for everything" data-xpln-step="0">
+                    <form class="d-flex" data-xpln="Here you can search for everything"
+                        data-xpln-step="1">
                         <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
                         <button class="btn btn-outline-success" type="submit">Search</button>
                     </form>
@@ -52,7 +53,8 @@
     <div class="container-fluid row">
 
         <nav id="navbar-example3" class="navbar navbar-light bg-light col-2">
-            <nav class="nav nav-pills flex-column" data-xpln data-xpln-text="Item-1-1 Step 2 Tooltip" data-xpln-step="1">
+            <nav class="nav nav-pills flex-column" data-xpln="Item-1-1 Step 2 Tooltip"
+                data-xpln-step="0">
                 <a class="nav-link" href="#item-1">Item 1</a>
                 <nav class="nav nav-pills flex-column">
                     <a class="nav-link ms-3 my-1" href="#item-1-1">Item 1-1</a>
@@ -83,7 +85,7 @@
                 <p>...</p>
                 <h5 id="item-3-2">Item 3-2</h5>
                 <p>...</p>
-              </div>
+            </div>
         </div>
     </div>
     <footer>
@@ -96,19 +98,22 @@
             </div>
         </nav>
     </footer>
-    <div class="card text-dark bg-light mb-3" data-xpln-tooltip>
+
+    <!-- xpln tip window -->
+    <div class="card text-dark bg-light mb-3" data-xpln-box>
         <div class="card-header">Tipp <a href="#" class="btn" data-xpln-close>x</a></div>
         <div class="card-body">
             <h5 class="card-title"></h5>
-            <p class="card-text" data-xpln-text></p>
+            <p class="card-text" data-xpln-content></p>
         </div>
         <div class="card-footer bg-transparent border-success">
             <button class="btn btn-primary" data-xpln-prev>Prev</button>
-            <button href="#" class="btn btn-primary" data-xpln-next>Next</button>
+            <button class="btn btn-primary" data-xpln-next>Next</button>
+            <button class="btn btn-outline-danger" data-xpln-close>Close</button>
         </div>
-        </div>
+    </div>
+
     <script type="module" src="https://unpkg.com/@popperjs/core@2"></script>
-    <script type="module" src="src/xpln.js"></script>
     <script type="module" src="index.js"></script>
 </body>
 
